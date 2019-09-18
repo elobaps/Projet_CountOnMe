@@ -54,18 +54,6 @@ class Calculate {
         return calculText.firstIndex(of: "=") != nil
     }
     
-//    func isItDecimal() -> Bool {
-//        var isDecimal = true
-//        for _ in calculText {
-//            if calculText.contains(".") {
-//                isDecimal = true
-//            } else {
-//                return false
-//            }
-//        }
-//        return isDecimal
-//    }
-    
     func addNewNumber(numberText: String) {
         if expressionHaveResult {
             calculText = ""

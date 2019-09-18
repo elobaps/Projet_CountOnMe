@@ -23,7 +23,7 @@ class CalculateTests: XCTestCase {
         calculate.addNewNumber(numberText: "1")
         calculate.equal()
         
-       XCTAssertEqual(calculate.calculText, "3 + 1 = 4")
+       XCTAssertEqual(calculate.calculText, "3 + 1 = 4.0")
     }
     
     func testGivenCalculTextSubstraction_WhenIsExpressionSubstractionLaunch_ThenSendUpToDateIsFalse() {
@@ -32,7 +32,34 @@ class CalculateTests: XCTestCase {
         calculate.addNewNumber(numberText: "2")
         calculate.equal()
         
-        XCTAssertEqual(calculate.calculText, "5 - 2 = 3")
+        XCTAssertEqual(calculate.calculText, "5 - 2 = 3.0")
+    }
+    
+    func testGivenCalculTextMultiplication_WhenIsExpressionMultiplicationLaunch_ThenSendUpToDateIsFalse() {
+        calculate.addNewNumber(numberText: "5")
+        calculate.addOperator(operators: .times)
+        calculate.addNewNumber(numberText: "2")
+        calculate.equal()
+        
+        XCTAssertEqual(calculate.calculText, "5 x 2 = 10.0")
+    }
+    
+    func testGivenCalculTextDivision_WhenIsExpressionDivisionLaunch_ThenSendUpToDateIsFalse() {
+        calculate.addNewNumber(numberText: "6")
+        calculate.addOperator(operators: .obelus)
+        calculate.addNewNumber(numberText: "2")
+        calculate.equal()
+        
+        XCTAssertEqual(calculate.calculText, "6 / 2 = 3.0")
+    }
+    
+    func testGivenCalculTextDivisionByzero_WhenIsExpressionDivisonByZeroLaunch_ThenSendUpToDateIsFalse() {
+        calculate.addNewNumber(numberText: "5")
+        calculate.addOperator(operators: .obelus)
+        calculate.addNewNumber(numberText: "0")
+        calculate.equal()
+        
+        XCTAssertFalse(calculate.expressionHaveDivisonByZero)
     }
     
     func testGivenCalculTextAddOperator_WhenTwoOperatorAreTapped_ThenShouldNotification() {
@@ -51,14 +78,24 @@ class CalculateTests: XCTestCase {
         XCTAssertEqual(calculate.calculText, "5")
     }
     
-    func testGivenError_When_ThenShouldNotification() {
+    func testGivenError_WhenTwoOperatorsEqualAreTapped_ThenShouldNotification() {
         calculate.addNewNumber(numberText: "1")
         calculate.addOperator(operators: .plus)
         calculate.addNewNumber(numberText: "1")
         calculate.equal()
         calculate.equal()
         
-        XCTAssertEqual(calculate.calculText, "1 + 1 = 2")
+        XCTAssertEqual(calculate.calculText, "1 + 1 = 2.0")
+    }
+    
+    func testGivenResetCalculText_WhenRestCalculTextIsLaunch_ThenShouldNotification() {
+        calculate.addNewNumber(numberText: "5")
+        calculate.addOperator(operators: .times)
+        calculate.addNewNumber(numberText: "2")
+        calculate.equal()
+        calculate.resetCalcul()
+        
+        XCTAssertEqual(calculate.calculText, "")
     }
 
 }
