@@ -15,7 +15,7 @@ enum MathOperator {
     case obelus
 }
 
-class Calculate {
+final class Calculate {
     
     var calculText: String = "1 + 1 = 2" {
         didSet {
@@ -33,24 +33,24 @@ class Calculate {
         return false
     }
     
-    var elements: [String] {
+    private var elements: [String] {
         return calculText.split(separator: " ").map { "\($0)" }
     }
     
     // Error check computed variables
-    var expressionIsCorrect: Bool {
+    private var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "/" && elements.last != "x"
     }
     
-    var expressionHaveEnoughElement: Bool {
+    private var expressionHaveEnoughElement: Bool {
         return elements.count >= 3
     }
     
-    var canAddOperator: Bool {
+    private var canAddOperator: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "/" && elements.last != "x"
     }
     
-    var expressionHaveResult: Bool {
+    private var expressionHaveResult: Bool {
         return calculText.firstIndex(of: "=") != nil
     }
     
@@ -64,7 +64,7 @@ class Calculate {
     
     func addOperator(operators: MathOperator) {
         if expressionHaveResult {
-           NotificationCenter.default.post(name: Notification.Name("displayAlert"), object: nil, userInfo: ["message" : "!"])
+           NotificationCenter.default.post(name: Notification.Name("displayAlert"), object: nil, userInfo: ["message" : "Vous ne pouvez pas ajouter un opérateur!"])
         } else if canAddOperator {
             switch operators {
             case .plus:
@@ -81,12 +81,12 @@ class Calculate {
         }
     }
     
-    func priorityCalcul(expression: [String]) -> [String] {
+    private func priorityCalcul(expression: [String]) -> [String] {
         var tempExpression = expression
         
         while tempExpression.contains("x") || tempExpression.contains("/") {
             if let index = tempExpression.firstIndex(where: {$0 == "x" || $0 == "/" }) {
-               let operand = tempExpression[index]
+                let operand = tempExpression[index]
                 guard let left = Float(tempExpression[index-1]) else { return []}
                 guard let right = Float(tempExpression[index+1]) else {return []}
                 let result: Float
@@ -99,7 +99,6 @@ class Calculate {
                 tempExpression.remove(at: index+1)
                 tempExpression.remove(at: index)
             }
-            
         }
         return tempExpression
     }
@@ -140,12 +139,9 @@ class Calculate {
             case "-": result = left - right
             default: return
             }
-            
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
         }
-        
         calculText.append(" = \(operationsToReduce.first!)")
     }
-    
 }

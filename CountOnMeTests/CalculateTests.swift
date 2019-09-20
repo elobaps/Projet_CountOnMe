@@ -8,7 +8,7 @@
 
 import XCTest
 @testable import CountOnMe
-class CalculateTests: XCTestCase {
+final class CalculateTests: XCTestCase {
     
     var calculate: Calculate!
 
@@ -96,6 +96,16 @@ class CalculateTests: XCTestCase {
         calculate.resetCalcul()
         
         XCTAssertEqual(calculate.calculText, "")
+    }
+    
+    func testGivenAddOperator_WhenOperationHaveResult_ThenShouldNotification() {
+        calculate.addNewNumber(numberText: "5")
+        calculate.addOperator(operators: .times)
+        calculate.addNewNumber(numberText: "2")
+        calculate.equal()
+        calculate.addOperator(operators: .minus)
+        
+        XCTAssertEqual(calculate.calculText, "5 x 2 = 10.0")
     }
 
 }

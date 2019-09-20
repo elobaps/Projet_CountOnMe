@@ -8,46 +8,45 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
     
     // MARK: - Outlets
     
-    @IBOutlet weak var textView: UITextView!
+    @IBOutlet private weak var textView: UITextView!
     
-    let calculate = Calculate()
+    private let calculate = Calculate()
     
     // MARK: - Actions
     
-    @IBAction func tappedNumberButton(_ sender: UIButton) {
+    @IBAction private func tappedNumberButton(_ sender: UIButton) {
         guard let numberText = sender.title(for: .normal) else {
             return
         }
         calculate.addNewNumber(numberText: numberText)
     }
     
-    @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        calculate.addOperator(operators: .plus)
+    @IBAction private func tappedOperatorButton(_ sender: UIButton) {
+        guard let title = sender.title(for: .normal) else {return}
+        switch title {
+        case "+":
+            calculate.addOperator(operators: .plus)
+        case "-":
+            calculate.addOperator(operators: .minus)
+        case "/":
+            calculate.addOperator(operators: .obelus)
+        case "x":
+            calculate.addOperator(operators: .times)
+        default:
+            break
+        }
     }
     
-    @IBAction func tappedMultiplicationButton(_ sender: UIButton) {
-        calculate.addOperator(operators: .times)
-    }
-    
-    @IBAction func tappedSubstractionButton(_ sender: UIButton) {
-        calculate.addOperator(operators: .minus)
-    }
-    
-    @IBAction func tappedDivisionButton(_ sender: UIButton) {
-        calculate.addOperator(operators: .obelus)
-    }
-    
-    @IBAction func tappedResetButton(_ sender: UIButton) {
+    @IBAction private func tappedResetButton(_ sender: UIButton) {
         calculate.resetCalcul()
     }
     
-    @IBAction func tappedEqualButton(_ sender: UIButton) {
+    @IBAction private func tappedEqualButton(_ sender: UIButton) {
         calculate.equal()
-        
     }
     
     // MARK: - View Life Cycle
@@ -60,31 +59,35 @@ class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(notificationAlert(notification:)), name: nameAlert, object: nil)
     }
     
-    @objc func refreshCalculText(notification: Notification) {
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // Mark: - Methods
+    
+    @objc
+    private func refreshCalculText(notification: Notification) {
         guard let userInfo = notification.userInfo else { return }
         guard let calculText = userInfo["calculText"] as? String else { return }
         textView.text = calculText
     }
     
-    @objc func notificationAlert(notification: Notification) {
+    @objc
+    private func notificationAlert(notification: Notification) {
         guard let userInfo = notification.userInfo else { return }
         guard let message = userInfo["message"] as? String else { return }
         displayAlert(message: message)
-        
     }
-    
 }
 
-// MARK: - displayAlert
+// MARK: - DisplayAlert
 
 extension ViewController {
     
+    ///
     func displayAlert(message: String) {
         let alertVC = UIAlertController(title: "Zéro!", message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         present(alertVC, animated: true, completion: nil)
     }
 }
-
-
-
