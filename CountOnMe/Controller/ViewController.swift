@@ -14,6 +14,7 @@ final class ViewController: UIViewController {
     
     @IBOutlet private weak var textView: UITextView!
     
+    /// Stock the instance of the class Calculate
     private let calculate = Calculate()
     
     // MARK: - Actions
@@ -25,6 +26,7 @@ final class ViewController: UIViewController {
         calculate.addNewNumber(numberText: numberText)
     }
     
+    /// Method that manages operators's buttons
     @IBAction private func tappedOperatorButton(_ sender: UIButton) {
         guard let title = sender.title(for: .normal) else {return}
         switch title {
@@ -59,11 +61,12 @@ final class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(notificationAlert(notification:)), name: nameAlert, object: nil)
     }
     
+    /// Deinitializer to delete the notifications in memory in the controller
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    // Mark: - Methods
+    // MARK: - Methods
     
     @objc
     private func refreshCalculText(notification: Notification) {
@@ -84,7 +87,7 @@ final class ViewController: UIViewController {
 
 extension ViewController {
     
-    ///
+    /// Method that manage alerts which will be used in my model
     func displayAlert(message: String) {
         let alertVC = UIAlertController(title: "Zéro!", message: message, preferredStyle: .alert)
         alertVC.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

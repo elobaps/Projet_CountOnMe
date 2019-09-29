@@ -16,13 +16,14 @@ enum MathOperator {
 }
 
 final class Calculate {
-    
+    /// Observation of my variable calculText with "didset" (an observer) and sending a notification to communicate with the controller
     var calculText: String = "1 + 1 = 2" {
         didSet {
             NotificationCenter.default.post(name: Notification.Name("calculText"), object: nil, userInfo: ["calculText": calculText])
         }
     }
     
+    /// We loop to recover all operators / to prevent divison by 0
     var expressionHaveDivisonByZero: Bool {
         var tempElements = elements
         while tempElements.contains("/") {
@@ -37,7 +38,7 @@ final class Calculate {
         return calculText.split(separator: " ").map { "\($0)" }
     }
     
-    // Error check computed variables
+    /// Error check computed variables
     private var expressionIsCorrect: Bool {
         return elements.last != "+" && elements.last != "-" && elements.last != "/" && elements.last != "x"
     }
@@ -58,10 +59,10 @@ final class Calculate {
         if expressionHaveResult {
             calculText = ""
         }
-        
         calculText.append(numberText)
     }
     
+    /// Method to check if a calculation had a result, if not add operators and if there is already an operator: error message
     func addOperator(operators: MathOperator) {
         if expressionHaveResult {
            NotificationCenter.default.post(name: Notification.Name("displayAlert"), object: nil, userInfo: ["message" : "Vous ne pouvez pas ajouter un opérateur!"])
@@ -81,6 +82,7 @@ final class Calculate {
         }
     }
     
+    /// Method for calculation priority. Get the operator x or /
     private func priorityCalcul(expression: [String]) -> [String] {
         var tempExpression = expression
         
@@ -124,10 +126,10 @@ final class Calculate {
             return
         }
         
-        // Create local copy of operations
+        /// We call priorityCalcul to remove the operators x and /
         var operationsToReduce = priorityCalcul(expression: elements)
         
-        // Iterate over operations while an operand still here
+        /// Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
             guard let left = Float(operationsToReduce[0]) else {return}
             let operand = operationsToReduce[1]
