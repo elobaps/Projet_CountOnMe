@@ -61,7 +61,7 @@ final class ViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(notificationAlert(notification:)), name: nameAlert, object: nil)
     }
     
-    /// Deinitializer to delete the notifications in memory in the controller
+    // Deinitializer to delete the notifications in memory in the controller
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -81,11 +81,6 @@ final class ViewController: UIViewController {
         guard let message = userInfo["message"] as? String else { return }
         displayAlert(message: message)
     }
-}
-
-// MARK: - DisplayAlert
-
-extension ViewController {
     
     /// Method that manage alerts which will be used in my model
     func displayAlert(message: String) {

@@ -144,6 +144,7 @@ final class Calculate {
             operationsToReduce = Array(operationsToReduce.dropFirst(3))
             operationsToReduce.insert("\(result)", at: 0)
         }
-        calculText.append(" = \(operationsToReduce.first!)")
+        guard let result = operationsToReduce.first else {return}
+        calculText.append(" = \(result)")
     }
 }
