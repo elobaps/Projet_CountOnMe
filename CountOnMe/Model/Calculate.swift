@@ -64,7 +64,7 @@ final class Calculate {
     
     /// Method to check if a calculation had a result, if not add operators and if there is already an operator: error message
     func addOperator(operators: MathOperator) {
-        if expressionHaveResult {
+        if expressionHaveResult || calculText.isEmpty {
            NotificationCenter.default.post(name: Notification.Name("displayAlert"), object: nil, userInfo: ["message" : "Vous ne pouvez pas ajouter un opérateur!"])
         } else if canAddOperator {
             switch operators {
