@@ -6,3 +6,7 @@ Students are supposed to clone or fork the repo and improve it. Their focus shou
 * Documentation
 * MVC compliance
 * Tests
+
+## ScreenShot
+
+![Screenshot-CountOnMe](https://raw.githubusercontent.com/elobaps/Projet_CountOnMe/master/Screenshot-CountOnMe.png)
